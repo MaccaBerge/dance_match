@@ -171,7 +171,11 @@ cython_debug/
 .pypirc
 
 # dances folder
-dances/
+dances/*
+!dances/.gitkeep
+
+# todo
+todo.markdown
 
 # mac folder file
 .DS_Store
