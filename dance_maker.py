@@ -158,11 +158,15 @@ class Dance_Maker:
                 print("Couldnt inizialize video_resources.")
                 return
             
+            number_of_frames = self.video_handler.get_number_of_frames()
+            fps = self.video_handler.get_framerate()
+            duration_ms = int(number_of_frames / fps * 1000)
+            
             timestamp_ms = 0
             
             running = True
             while running:
-                print(timestamp_ms)
+                print(f"Proccessing frame at {timestamp_ms}/{duration_ms}ms")
                 self.video_handler.set_position_msec(timestamp_ms)
                 ret, frame = self.video_handler.read_frame()
                 if not ret: return
@@ -185,5 +189,5 @@ class Dance_Maker:
 
 if __name__ == "__main__":
     dance_maker = Dance_Maker("models/pose_landmarker_full.task", storage_base_path="dances")
-    dance_maker.make_from_webcam("Dance_Test")
-    #dance_maker.make_from_video(video_path="test_video.MOV", dance_name="video_test", time_between_poses_ms=50)
+    #dance_maker.make_from_webcam("Dance_Test")
+    dance_maker.make_from_video(video_path="test.mp4", dance_name="video_test", time_between_poses_ms=50)

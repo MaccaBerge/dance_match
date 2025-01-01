@@ -24,6 +24,11 @@ class Video_Capture_Handler:
         if not self.cap: return
         return self.cap.get(cv2.CAP_PROP_FPS)
     
+    def get_number_of_frames(self) -> int:
+        if self.is_live_stream: return
+
+        return self.cap.get(cv2.CAP_PROP_FRAME_COUNT)
+    
     def get_frame_size(self) -> Union[tuple, None]:
         if not self.cap: return
         return int(self.cap.get(cv2.CAP_PROP_FRAME_WIDTH)), int(self.cap.get(cv2.CAP_PROP_FRAME_HEIGHT))
