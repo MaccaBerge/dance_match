@@ -1,5 +1,4 @@
 import cv2
-import numpy as np
 
 from pose_module import Pose_Sequence, Pose_Landmarker_Model, Pose_Visualizer
 from video_module import Video_Capture_Handler, Video_Recorder
@@ -42,11 +41,3 @@ def annotate_pose_sequence_to_video(video_obj: Video_Capture_Handler, pose_seque
         print("Frame: ", video_obj.cap.get(cv2.CAP_PROP_POS_FRAMES), "Time: ", video_obj.cap.get(cv2.CAP_PROP_POS_MSEC))
     
     video_recorder.stop_recording()
-
-
-
-if __name__ == "__main__":
-    video = Video_Capture_Handler("test_video.MOV")
-    pose_sequence = Pose_Sequence.load_from_json_file("dances/video_test_7/pose_sequence_data.json")
-
-    annotate_pose_sequence_to_video(video, pose_sequence)
