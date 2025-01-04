@@ -1,6 +1,6 @@
 import pygame
 
-from modules.settings_module import Settings
+from .settings_module import Settings
 
 class Game:
     def __init__(self, settings: Settings) -> None:

@@ -1,7 +1,7 @@
 import cv2
 
-from pose_module import Pose_Sequence, Pose_Landmarker_Model, Pose_Visualizer
-from video_module import Video_Capture_Handler, Video_Recorder
+from .pose_module import Pose_Sequence, Pose_Landmarker_Model, Pose_Visualizer
+from .video_module import Video_Capture_Handler, Video_Recorder
 
 
 def annotate_pose_sequence_to_video(video_obj: Video_Capture_Handler, pose_sequence: Pose_Sequence, save_path: str = "annotated_video.mp4") -> None:
