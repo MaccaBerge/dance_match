@@ -40,6 +40,10 @@ class Video_Capture_Handler:
         if not self.cap:
             return False
         return self.cap.set(cv2.CAP_PROP_POS_MSEC, timestamp_ms)
+    
+    def set_frame(self, frame: int) -> None:
+        if self.is_live_stream: return
+        self.cap.set(cv2.CAP_PROP_POS_FRAMES, 0)
 
 class Video_Recorder:
     def __init__(self, filename: str, fps: float, frame_size: tuple, codec: str = "mp4v") -> None:

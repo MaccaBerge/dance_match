@@ -4,6 +4,7 @@ from numpy import copy
 from os.path import exists
 from typing import Union
 import json
+import numpy as np
 
 class Pose:
     def __init__(self, landmarks, timestamp_ms) -> None:
@@ -71,7 +72,7 @@ class Pose_Sequence:
             
             time_between_poses_ms = data["time_between_poses_ms"]
             
-            pose_sequence = Pose_Sequence(time_between_poses=time_between_poses_ms)
+            pose_sequence = Pose_Sequence(time_between_poses_ms)
             for pose_dict in data["poses"]:
                 pose = Pose.from_dict(pose_dict)
                 pose_sequence.add_pose(pose)
@@ -112,10 +113,13 @@ class Pose_Landmarker_Model:
 
     def get_latest_result(self):
         return self.latest_result
+    
+    def get_latest_frame(self) -> mp.Image:
+        return self.latest_image
 
 class Pose_Visualizer:
     @staticmethod
-    def draw_landmarks(rgb_image, pose: Pose) -> None:
+    def draw_landmarks(rgb_image: np.ndarray, pose: Pose) -> np.ndarray:
         if not isinstance(pose, Pose): 
             raise TypeError("Expected Pose object")
         if not pose.landmarks: return rgb_image

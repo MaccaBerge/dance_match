@@ -3,13 +3,10 @@ from os import makedirs
 from os.path import exists, join
 from typing import Any, Union
 
-from pose_module import Pose
-from pose_module import Pose_Sequence
-from pose_module import Pose_Landmarker_Model
-from pose_module import Pose_Visualizer
-from video_module import Video_Capture_Handler
-from video_module import Video_Recorder
+from pose_module import Pose, Pose_Sequence, Pose_Landmarker_Model, Pose_Visualizer
+from video_module import Video_Capture_Handler, Video_Recorder
 from timer_module import Timer_Thread
+from utils import annotate_pose_sequence_to_video
 
 class Dance_Maker:
     def __init__(self, pose_model_path: str, storage_base_path: str = "./", clean_video_filename: str = "clean_dance_video.mp4",
@@ -183,6 +180,8 @@ class Dance_Maker:
         except Exception as e:
             print(f"Error: {e}")
         finally:
+            self.video_handler.set_frame(0)
+            annotate_pose_sequence_to_video(self.video_handler, self.pose_sequence, save_path=join(self.output_folder_path, self.annotated_video_name))
             self._cleanup_video_resources()
             if self.pose_sequence: self.pose_sequence.save_to_json_file(join(self.output_folder_path, self.pose_sequence_data_filename))
 
@@ -190,4 +189,4 @@ class Dance_Maker:
 if __name__ == "__main__":
     dance_maker = Dance_Maker("models/pose_landmarker_full.task", storage_base_path="dances")
     #dance_maker.make_from_webcam("Dance_Test")
-    dance_maker.make_from_video(video_path="test.mp4", dance_name="video_test", time_between_poses_ms=50)
+    dance_maker.make_from_video(video_path="test_video.MOV", dance_name="video_test", time_between_poses_ms=50)
