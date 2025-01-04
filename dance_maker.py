@@ -3,10 +3,10 @@ from os import makedirs
 from os.path import exists, join
 from typing import Any, Union
 
-from pose_module import Pose, Pose_Sequence, Pose_Landmarker_Model, Pose_Visualizer
-from video_module import Video_Capture_Handler, Video_Recorder
-from timer_module import Timer_Thread
-from utils import annotate_pose_sequence_to_video
+from modules.pose_module import Pose, Pose_Sequence, Pose_Landmarker_Model, Pose_Visualizer
+from modules.video_module import Video_Capture_Handler, Video_Recorder
+from modules.timer_module import Timer_Thread
+from modules.utils import annotate_pose_sequence_to_video
 
 class Dance_Maker:
     def __init__(self, pose_model_path: str, storage_base_path: str = "./", clean_video_filename: str = "clean_dance_video.mp4",
@@ -188,5 +188,5 @@ class Dance_Maker:
 
 if __name__ == "__main__":
     dance_maker = Dance_Maker("models/pose_landmarker_full.task", storage_base_path="dances")
-    #dance_maker.make_from_webcam("Dance_Test")
-    dance_maker.make_from_video(video_path="test_video.MOV", dance_name="video_test", time_between_poses_ms=50)
+    dance_maker.make_from_webcam("Dance_Test")
+    #dance_maker.make_from_video(video_path="test_dance.mov", dance_name="video_test", time_between_poses_ms=50)
