@@ -7,4 +7,7 @@ class Game:
         pygame.init()
         self.settings = settings
         self.screen = pygame.display.get_surface()
+    
+    def run(self) -> None:
+        pass
 

@@ -1,14 +1,14 @@
 import pygame
 
-from game import Game
-from settings import Settings
+from modules.game import Game
+from modules.settings_module import Settings
 
 class Main:
     def __init__(self) -> None:
         pygame.display.set_mode((Settings.display.WIDTH, Settings.display.HEIGHT))
 
         self.settings = Settings()
-        self.game = Game()
+        self.game = Game(self.settings)
         
     def run(self) -> None:
         self.game.run()
