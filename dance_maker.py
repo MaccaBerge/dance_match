@@ -6,11 +6,11 @@ from typing import Any, Union
 from modules.pose_module import Pose, Pose_Sequence, Pose_Landmarker_Model, Pose_Visualizer
 from modules.video_module import Video_Capture_Handler, Video_Recorder
 from modules.timer_module import Timer_Thread
-from modules.utils import annotate_pose_sequence_to_video
+from modules.utilities_module import annotate_pose_sequence_to_video
 
 class Dance_Maker:
     def __init__(self, pose_model_path: str, storage_base_path: str = "./", clean_video_filename: str = "clean_dance_video.mp4",
-                 annotated_video_filename: str = "annotated_dance_video.mp4", 
+                 annotated_video_filename: str = "annotated_dance_video.mp4",
                  pose_sequence_data_filename: str = "pose_sequence_data.json") -> None:
         self.pose_landmark_model = Pose_Landmarker_Model(pose_model_path)
         self.storage_base_path = storage_base_path
@@ -189,4 +189,4 @@ class Dance_Maker:
 if __name__ == "__main__":
     dance_maker = Dance_Maker("models/pose_landmarker_full.task", storage_base_path="dances")
     dance_maker.make_from_webcam("Dance_Test")
-    #dance_maker.make_from_video(video_path="test_dance.mov", dance_name="video_test", time_between_poses_ms=50)
+    #dance_maker.make_from_video(video_path="christian_dance.MOV", dance_name="video_test", time_between_poses_ms=50)
