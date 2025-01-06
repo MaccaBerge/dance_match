@@ -1,4 +1,7 @@
 import pygame
+from typing import Any, Dict, Optional
+
+from .settings_module import Settings
 
 class Game_State:
     """Common base class for all game states."""
@@ -16,9 +19,10 @@ class Game_State:
 
 
 class Game_State_Manager:
-    def __init__(self) -> None:
-        self.states = {}
-        self.selected_state = None
+    def __init__(self, settings: Settings) -> None:
+        self.settings: Settings = settings
+        self.states: Dict[str, Game_State] = {}
+        self.selected_state: Optional[Game_State] = None
 
     def _check_selected_state(self) -> None:
         if not self.selected_state:
@@ -43,11 +47,17 @@ class Game_State_Manager:
     
     def handle_events(self, event: pygame.Event) -> None:
         self._check_selected_state()
-        self.states[self.selected_state].handle_events(event)
+        ret = self.states[self.selected_state].handle_events(event)
+
+        match ret:
+            case self.settings.state.MAIN_MENU_KEY:
+                self.set_state("main_menu")
+            case self.settings.state.DANCE_SELECTION_KEY:
+                self.set_state("dance_selection")
 
     def update(self, dt: float) -> None:
         self._check_selected_state()
-        self.states[self.selected_state].update(dt)
+        return self.states[self.selected_state].update(dt)
 
     def render(self, render_surface: pygame.Surface) -> None:
         self._check_selected_state()
