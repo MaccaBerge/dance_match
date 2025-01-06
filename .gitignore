@@ -170,14 +170,18 @@ cython_debug/
 # PyPI configuration file
 .pypirc
 
-# dances folder
+# Tances folder
 dances/*
 !dances/.gitkeep
 
 test_dances
 
-# todo
+# Todo
 todo.markdown
 
-# mac folder file
+# Mac folder file
 .DS_Store
+
+# Video Files
+*.mov
+*.mp4
