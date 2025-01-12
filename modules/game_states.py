@@ -2,14 +2,12 @@ import pygame
 from typing import List, Tuple, Any, Union, Dict, Optional
 import cv2
 
-# Importing relevant modules that encapsulate functionality for the game states, buttons, dances, poses, video handling, and settings.
 from .state_module import Game_State
 from .button_module import Text_Button, Image_Button
 from .dance_module import Dance
 from .pose_module import Pose_Landmarker_Model, Pose, compare_poses
 from .video_module import Video_Capture_Handler
 from .settings_module import Settings
-
 
 class Main_Menu(Game_State):
     """
@@ -213,7 +211,6 @@ class Dance_Selection(Game_State):
         if self.button_callback_queue:
             return self.button_callback_queue.pop(0)
 
-
 class Play_Dance(Game_State):
     """
     Represents the state where the player performs a dance in the game.
@@ -261,6 +258,8 @@ class Play_Dance(Game_State):
         self.dist = 10
         self.current_batch_average = 2
 
+        self.performance_text: str = ""
+
     def _track_performance(self) -> None:
         """
         Tracks the performance by calculating the average distance for the current batch
@@ -271,6 +270,10 @@ class Play_Dance(Game_State):
             self.batch_averages.append(batch_average)
             self.current_distances.clear()
             self.current_batch_average = batch_average
+            if self.current_batch_average < 0.4: self.performance_text = "Really Good!"
+            elif self.current_batch_average < 0.9: self.performance_text = "Good!"
+            elif self.current_batch_average < 1.6: self.performance_text = "Decent."
+            else: self.performance_text = "Bad."
 
     def get_final_score(self) -> int:
         """
@@ -315,7 +318,7 @@ class Play_Dance(Game_State):
         """
         render_surface.blit(self.frame_surface, (0, 0))
 
-        surf = self.dance_dist_font.render(str(round(self.current_batch_average, 2)), True, (255, 0, 0))
+        surf = self.dance_dist_font.render(self.performance_text, True, (255, 0, 0))
         rect = surf.get_rect(midbottom=(self.settings.display.WIDTH / 2, self.settings.display.HEIGHT))
         render_surface.blit(surf, rect)
 
@@ -421,7 +424,6 @@ class Play_Dance(Game_State):
                 self.dance.video.release()
                 score = self.get_final_score()
                 return f"{self.settings.state.DANCE_SCORE_KEY}{int(score)}"
-
 
 class Scoreboard(Game_State):
     """

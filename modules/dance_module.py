@@ -73,7 +73,6 @@ class Dance:
         """
         return self.thumbnail
 
-
 class Dance_Loader:
     """
     Handles the loading of dance data from directories.
