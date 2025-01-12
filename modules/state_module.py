@@ -50,14 +50,7 @@ class Game_State_Manager:
 
     def update(self, dt: float) -> None:
         self._check_selected_state()
-        ret = self.states[self.selected_state].update(dt)
-        match ret:
-            case self.settings.state.MAIN_MENU_KEY:
-                self.set_state(ret)
-            case self.settings.state.DANCE_SELECTION_KEY:
-                self.set_state(ret)
-
-        return ret
+        return self.states[self.selected_state].update(dt)
 
     def render(self, render_surface: pygame.Surface) -> None:
         self._check_selected_state()

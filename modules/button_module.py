@@ -1,6 +1,8 @@
 import pygame
 from typing import Union, List, Tuple, Callable, Any, overload
 
+from .utilities_module import apply_tint
+
 class Button_Base:
     NORMAL_STATE: int = 0
     HOVERED_STATE: int = 1
@@ -74,3 +76,31 @@ class Text_Button(Button_Base):
             self.current_color = new_color
             self.text_surface = self.font.render(self.text, True, self.current_color)
         return super().update()
+
+class Image_Button(Button_Base):
+    def __init__(self, image: pygame.Surface, position: Union[List[int], Tuple[int]], 
+                 hover_tint_color: pygame.Color, pressed_tint_color: pygame.Color,
+                 hover_tint_intensity: int = 100, pressed_tint_intensity: int = 100,
+                 callback: Callable[[], Any] = None) -> None:
+        
+        self.normal_image = image
+        self.position = position
+
+        self.hover_image = apply_tint(self.normal_image, hover_tint_color, hover_tint_intensity)
+        self.pressed_image = apply_tint(self.normal_image, pressed_tint_color, pressed_tint_intensity)
+
+        self.images = {
+            Button_Base.NORMAL_STATE: self.normal_image,
+            Button_Base.HOVERED_STATE: self.hover_image,
+            Button_Base.PRESSED_STATE: self.pressed_image
+        }
+        super().__init__(size=self.normal_image.get_size(), position=position, callback=callback)
+    
+    def render(self, render_surface: pygame.Surface) -> None:
+        render_surface.blit(self.images[self.state], self.rect)
+        # pygame.draw.rect(render_surface, (255,0,0), self.rect)
+    
+    def update(self) -> None:
+        return super().update()
+
+    

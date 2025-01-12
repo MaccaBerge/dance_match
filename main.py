@@ -13,7 +13,6 @@ class Main:
     def run(self) -> None:
         self.game.run()
 
-
 if __name__ == "__main__":
     main = Main()
     main.run()

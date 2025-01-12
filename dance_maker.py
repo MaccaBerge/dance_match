@@ -71,12 +71,12 @@ class Dance_Maker:
 
         self.annotated_video_recorder = Video_Recorder(
             filename=join(self.output_folder_path, self.annotated_video_name),
-            fps=self.video_handler.get_framerate() or 30, 
+            fps=15, #self.video_handler.get_framerate() or 30 
             frame_size=self.video_handler.get_frame_size() or (640, 480))
         
         self.clean_video_recorder = Video_Recorder(
             filename=join(self.output_folder_path, self.clean_video_name),
-            fps=self.video_handler.get_framerate() or 30, 
+            fps=15, 
             frame_size=self.video_handler.get_frame_size() or (640, 480))
         
         self.interval_timer = Timer_Thread(50, self._webcam_timer_callback)
@@ -180,7 +180,7 @@ class Dance_Maker:
         except Exception as e:
             print(f"Error: {e}")
         finally:
-            self.video_handler.set_frame(0)
+            if self.video_handler: self.video_handler.set_frame(0)
             annotate_pose_sequence_to_video(self.video_handler, self.pose_sequence, save_path=join(self.output_folder_path, self.annotated_video_name))
             self._cleanup_video_resources()
             if self.pose_sequence: self.pose_sequence.save_to_json_file(join(self.output_folder_path, self.pose_sequence_data_filename))
@@ -188,5 +188,5 @@ class Dance_Maker:
 
 if __name__ == "__main__":
     dance_maker = Dance_Maker("models/pose_landmarker_full.task", storage_base_path="dances")
-    dance_maker.make_from_webcam("Dance_Test")
-    #dance_maker.make_from_video(video_path="christian_dance.MOV", dance_name="video_test", time_between_poses_ms=50)
+    #dance_maker.make_from_webcam("Dance_Test")
+    dance_maker.make_from_video(video_path="dance_4.mov", dance_name="Dance_Test_4", time_between_poses_ms=50)

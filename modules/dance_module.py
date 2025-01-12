@@ -1,6 +1,6 @@
 import pygame
 import os
-from typing import List
+from typing import List, Literal
 
 from .pose_module import Pose_Sequence
 from .video_module import Video_Capture_Handler
@@ -12,6 +12,12 @@ class Dance:
         self.video = video
         self.pose_sequence = pose_sequence
         self.thumbnail = thumbnail
+
+        self.stars = 0
+    
+    def set_stars(self, number_of_starts: Literal[0, 1, 2, 3]) -> None:
+        if number_of_starts not in (0,1,2,3): return
+        self.stars = number_of_starts
     
     def get_name(self) -> str:
         return self.name
@@ -67,6 +73,9 @@ class Dance_Loader:
                 data["pose_sequence"] = self.load_pose_sequence(file_path)
             elif file.startswith(self.settings.dance.THUMBNAIL_FILENAME):
                 data["thumbnail"] = self.load_thumbnail(file_path)
+        
+        if data["thumbnail"] is None:
+            data["thumbnail"] = self.load_thumbnail("default_thumbnail.jpeg")
 
         return data
 
