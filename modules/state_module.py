@@ -17,7 +17,6 @@ class Game_State:
         """Render state."""
         raise NotImplementedError
 
-
 class Game_State_Manager:
     def __init__(self, settings: Settings) -> None:
         self.settings: Settings = settings
@@ -47,17 +46,18 @@ class Game_State_Manager:
     
     def handle_events(self, event: pygame.Event) -> None:
         self._check_selected_state()
-        ret = self.states[self.selected_state].handle_events(event)
-
-        match ret:
-            case self.settings.state.MAIN_MENU_KEY:
-                self.set_state("main_menu")
-            case self.settings.state.DANCE_SELECTION_KEY:
-                self.set_state("dance_selection")
+        self.states[self.selected_state].handle_events(event)
 
     def update(self, dt: float) -> None:
         self._check_selected_state()
-        return self.states[self.selected_state].update(dt)
+        ret = self.states[self.selected_state].update(dt)
+        match ret:
+            case self.settings.state.MAIN_MENU_KEY:
+                self.set_state(ret)
+            case self.settings.state.DANCE_SELECTION_KEY:
+                self.set_state(ret)
+
+        return ret
 
     def render(self, render_surface: pygame.Surface) -> None:
         self._check_selected_state()

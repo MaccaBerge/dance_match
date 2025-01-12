@@ -50,7 +50,7 @@ class Button_Base:
 
         
 class Text_Button(Button_Base):
-    def __init__(self, position: Union[List[int], Tuple[int]], text: str, normal_color: pygame.Color, 
+    def __init__(self, text: str, position: Union[List[int], Tuple[int]], normal_color: pygame.Color, 
                  hover_color: pygame.Color, pressed_color: pygame.Color,
                  font: pygame.Font, callback: Callable[[], Any] = None) -> None:
         

@@ -1,10 +1,21 @@
 import mediapipe as mp
 from mediapipe.framework.formats import landmark_pb2
-from numpy import copy
+from numpy import copy, ndarray
+import fastdtw
+from scipy.spatial.distance import cosine
 from os.path import exists
-from typing import Union
 import json
-import numpy as np
+from typing import Union
+
+def compare_poses(pose1: "Pose", pose2: "Pose") -> float:
+    try:
+        pose1 = [[lm.x, lm.y, lm.z] for lm in pose1.landmarks[0]]
+        pose2 = [[lm.x, lm.y, lm.z] for lm in pose2.landmarks[0]]
+
+        distance, _ = fastdtw.fastdtw(pose1, pose2, dist=cosine)
+        return distance
+    except:
+        return None
 
 class Pose:
     def __init__(self, landmarks, timestamp_ms) -> None:
@@ -89,7 +100,7 @@ class Pose_Landmarker_Model:
         self.model_path = model_path
         self.landmarker = None
 
-    def initialize(self):
+    def initialize(self) -> None:
         base_options = mp.tasks.BaseOptions
         pose_landmarker = mp.tasks.vision.PoseLandmarker
         pose_landmarker_options = mp.tasks.vision.PoseLandmarkerOptions
@@ -102,7 +113,7 @@ class Pose_Landmarker_Model:
         )
         self.landmarker = pose_landmarker.create_from_options(options)
 
-    def _result_callback(self, result, output_image, timestamp_ms):
+    def _result_callback(self, result, output_image, timestamp_ms) -> None:
         self.latest_result = result
         self.latest_image = output_image
 
@@ -119,7 +130,7 @@ class Pose_Landmarker_Model:
 
 class Pose_Visualizer:
     @staticmethod
-    def draw_landmarks(rgb_image: np.ndarray, pose: Pose) -> np.ndarray:
+    def draw_landmarks(rgb_image: ndarray, pose: Pose) -> ndarray:
         if not isinstance(pose, Pose): 
             raise TypeError("Expected Pose object")
         if not pose.landmarks: return rgb_image
